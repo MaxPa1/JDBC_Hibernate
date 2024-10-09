@@ -3,17 +3,22 @@ package jm.task.core.jdbc.dao;
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.Util;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoJDBCImpl implements UserDao {
-    Connection connection = Util.getConnection();
+    private Connection connection = Util.getConnection();
 
     public UserDaoJDBCImpl() {
 
     }
 
+    @Override
     public void createUsersTable() {
         Statement statement = null;
 
@@ -35,6 +40,7 @@ public class UserDaoJDBCImpl implements UserDao {
         }
     }
 
+    @Override
     public void dropUsersTable() {
         Statement statement = null;
 
@@ -56,6 +62,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     }
 
+    @Override
     public void saveUser(String name, String lastName, byte age) {
         PreparedStatement preparedStatement = null;
 
@@ -66,7 +73,6 @@ public class UserDaoJDBCImpl implements UserDao {
             preparedStatement.setString(2, lastName);
             preparedStatement.setByte(3, age);
             preparedStatement.executeUpdate();
-            System.out.println("User " + name + " добавлен в базу данных");
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -81,6 +87,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     }
 
+    @Override
     public void removeUserById(long id) {
         PreparedStatement preparedStatement = null;
 
@@ -100,9 +107,9 @@ public class UserDaoJDBCImpl implements UserDao {
                 }
             }
         }
-
     }
 
+    @Override
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<User>();
         PreparedStatement preparedStatement = null;
@@ -135,6 +142,7 @@ public class UserDaoJDBCImpl implements UserDao {
         return users;
     }
 
+    @Override
     public void cleanUsersTable() {
         PreparedStatement preparedStatement = null;
 

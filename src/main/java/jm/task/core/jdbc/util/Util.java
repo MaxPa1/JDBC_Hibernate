@@ -1,6 +1,7 @@
 package jm.task.core.jdbc.util;
 
 import jm.task.core.jdbc.model.User;
+import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -8,7 +9,6 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.service.ServiceRegistry;
 
 import java.sql.Connection;
-import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
@@ -19,8 +19,11 @@ public class Util {
     private static final String URL = "jdbc:mysql://localhost:3306/test_db";
     private static final String USERNAME = "user";
     private static final String PASSWORD = "1234";
-    private static final Connection connection = getConnection();
+    private static final Connection CONNECTION = getConnection();
     private static  SessionFactory sessionFactory = getSessionFactory();
+
+    private Util() {
+    }
 
     public static Connection getConnection() {
         Connection connection = null;
@@ -34,7 +37,7 @@ public class Util {
 
     public static void closeConnection() {
         try {
-            connection.close();
+            CONNECTION.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -61,7 +64,7 @@ public class Util {
                         .applySettings(configuration.getProperties()).build();
 
                 sessionFactory = configuration.buildSessionFactory(serviceRegistry);
-            } catch (Exception e) {
+            } catch (HibernateException e) {
                 e.printStackTrace();
             }
         }
