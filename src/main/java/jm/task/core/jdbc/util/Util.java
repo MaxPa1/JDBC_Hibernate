@@ -1,7 +1,6 @@
 package jm.task.core.jdbc.util;
 
 import java.sql.Connection;
-import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
@@ -11,7 +10,9 @@ public class Util {
     private static final String URL = "jdbc:mysql://localhost:3306/test_db";
     private static final String NAME = "user";
     private static final String PASSWORD = "1234";
-    private static final Connection connection = getConnection();
+    private static final Connection CONNECTION = getConnection();
+
+    private Util() {}
 
     public static Connection getConnection() {
         Connection connection = null;
@@ -25,7 +26,7 @@ public class Util {
 
     public static void closeConnection() {
         try {
-            connection.close();
+            CONNECTION.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
